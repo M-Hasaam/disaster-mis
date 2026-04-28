@@ -1,3 +1,37 @@
+# Disaster Response MIS - Next.js Frontend
+
+This repository contains a Next.js frontend and API layers for the Disaster Response MIS. It connects to an existing SQL Server database named `DisasterResponseMIS`.
+
+Prerequisites
+- Node.js 18+
+- SQL Server with the provided database and connection string
+
+Setup
+
+1. Copy `.env.example` to `.env.local` and fill your DB credentials and `NEXTAUTH_SECRET`.
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the app:
+
+```bash
+npm run dev
+```
+
+Files generated
+- `src/lib/db.ts` - MSSQL pool and helpers
+- `src/lib/auth.ts` - NextAuth configuration
+- `src/app/api/*` - API routes interacting with the database
+- `src/actions/*` - server-side helpers (transactions)
+- `src/app/(dashboard)` - dashboard layouts and pages
+
+Notes
+- All DB queries use parameterization helpers in `src/lib/db.ts`. Session context is set before writes where applicable.
+- This scaffold assumes the database schema, triggers, and views already exist and should not be modified.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const crypto=require\\('crypto'\\); console.log\\('admin123 SHA256:', crypto.createHash\\('sha256'\\).update\\('admin123'\\).digest\\('hex'\\)\\); console.log\\('op123 SHA256:', crypto.createHash\\('sha256'\\).update\\('op123'\\).digest\\('hex'\\)\\);\")",
+      "Bash(node -e ' *)",
+      "Bash(powershell *)"
+    ]
+  }
+}
