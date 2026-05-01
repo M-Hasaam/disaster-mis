@@ -7,7 +7,13 @@
       "Bash(powershell *)",
       "Bash(pandoc --version)",
       "Bash(pip show *)",
-      "Bash(python generate_report.py)"
+      "Bash(python generate_report.py)",
+      "Bash(Get-ChildItem -Path \"D:\\\\CODE\\\\Projects\\\\University_Projects\\\\DB\\\\disaster-mis\\\\src\\\\app\" -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(head *)",
+      "Bash(npx next *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('framer-motion'\\); console.log\\('OK', require\\('./node_modules/framer-motion/package.json'\\).version\\)\")"
     ]
   }
 }

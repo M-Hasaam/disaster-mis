@@ -2,6 +2,7 @@ import React from 'react'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/lib/auth'
 import Sidebar from '@/components/ui/Sidebar'
+import PageTransition from '@/components/ui/PageTransition'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -11,61 +12,83 @@ export default async function DashboardLayout({ children }: { children: React.Re
         redirect('/login')
     }
 
-    const role = session.user.role
-    const name = session.user.name
+    const role     = session.user.role
+    const name     = session.user.name
     const initials = name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || '??'
+
+    const avatarGradients: Record<string, string> = {
+        'Administrator':      'linear-gradient(135deg, #3b82f6, #6366f1)',
+        'Emergency Operator': 'linear-gradient(135deg, #f43f5e, #f97316)',
+        'Warehouse Manager':  'linear-gradient(135deg, #f59e0b, #84cc16)',
+        'Finance Officer':    'linear-gradient(135deg, #10b981, #06b6d4)',
+        'Field Officer':      'linear-gradient(135deg, #8b5cf6, #ec4899)',
+    }
+    const avatarGrad = avatarGradients[role] ?? avatarGradients['Administrator']
 
     return (
         <div className="main-layout">
             <Sidebar role={role} />
             <main className="main-content">
-                {/* Topbar */}
+
+                {/* ── Topbar ─────────────────────────────────────── */}
                 <header className="topbar">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        {/* Breadcrumb-style role indicator */}
+
+                    {/* Left: system status + search */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                                <div className="live-dot pulse-dot" />
-                                <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                                    SYSTEM OPERATIONAL
-                                </span>
-                            </div>
-                            <span style={{ color: 'var(--border-strong)', fontSize: '0.75rem' }}>|</span>
-                            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                                {role}
+                            <div className="live-dot pulse-dot" />
+                            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                                Operational
                             </span>
+                        </div>
+
+                        <div style={{ width: 1, height: 18, background: 'var(--border)' }} />
+
+                        {/* Search pill (visual — can be upgraded to cmd palette later) */}
+                        <div className="topbar-search-bar" role="button" aria-label="Search">
+                            <svg style={{ width: 13, height: 13, flexShrink: 0 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+                            </svg>
+                            <span style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-muted)' }}>Search records...</span>
+                            <span className="kbd-pill">⌘ K</span>
                         </div>
                     </div>
 
-                    {/* Right section */}
+                    {/* Right: notifications + user */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
                         {/* Notification bell */}
-                        <button style={{ position: 'relative', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--r-md)', background: 'var(--bg-elevated)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.15s' }} className="btn-ghost">
-                            <svg style={{ width: 16, height: 16 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75}>
+                        <button
+                            style={{ position: 'relative', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--r-md)', background: 'var(--bg-elevated)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.15s' }}
+                            className="btn-ghost"
+                            aria-label="Notifications"
+                        >
+                            <svg style={{ width: 15, height: 15 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
                             </svg>
-                            <span style={{ position: 'absolute', top: 6, right: 6, width: 7, height: 7, background: 'var(--rose)', borderRadius: '50%', border: '1.5px solid var(--bg-topbar)' }} />
+                            <span style={{ position: 'absolute', top: 5, right: 5, width: 8, height: 8, background: 'var(--rose)', borderRadius: '50%', border: '1.5px solid var(--bg-topbar)', animation: 'pulse-dot 2.4s ease-in-out infinite' }} />
                         </button>
 
                         {/* Divider */}
                         <div style={{ width: 1, height: 24, background: 'var(--border)' }} />
 
-                        {/* User info */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', padding: '0 0.25rem' }}>
+                        {/* User info + avatar */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', padding: '0 0.125rem' }}>
                             <div style={{ textAlign: 'right' }}>
                                 <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>{name}</p>
-                                <p style={{ fontSize: '0.6rem', color: 'var(--text-muted)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>{role.split(' ')[0]}</p>
+                                <p style={{ fontSize: '0.5625rem', color: 'var(--text-muted)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>{role.split(' ')[0]}</p>
                             </div>
                             <div style={{
                                 width: 34, height: 34,
                                 borderRadius: 'var(--r-md)',
-                                background: 'linear-gradient(135deg, var(--accent-blue), var(--violet))',
+                                background: avatarGrad,
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 fontSize: '0.6875rem', fontWeight: 800,
                                 color: '#fff',
                                 letterSpacing: '0.04em',
-                                boxShadow: '0 2px 8px rgba(59,130,246,0.3)',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.35)',
                                 flexShrink: 0,
+                                border: '1px solid rgba(255,255,255,0.15)',
                             }}>
                                 {initials}
                             </div>
@@ -73,11 +96,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
                     </div>
                 </header>
 
-                {/* Page content */}
+                {/* ── Page content ───────────────────────────────── */}
                 <div className="page-content">
-                    <div className="animate-in">
+                    <PageTransition>
                         {children}
-                    </div>
+                    </PageTransition>
                 </div>
             </main>
         </div>

@@ -168,7 +168,7 @@ export default function FinanceTransactionsPage() {
 
             {/* Add Donation Modal */}
             {showDonate && (
-                <Modal title="Record Donation" onClose={() => { setShowDonate(false); setDMsg('') }}>
+                <Modal isOpen={showDonate} title="Record Donation" onClose={() => { setShowDonate(false); setDMsg('') }}>
                     <form onSubmit={submitDonation} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <label style={labelStyle}>Donor Name <input required style={inputStyle} value={dForm.donor_name} onChange={e => setDForm(f => ({ ...f, donor_name: e.target.value }))} /></label>
                         <label style={labelStyle}>Amount (USD) <input required type="number" min="0.01" step="0.01" style={inputStyle} value={dForm.amount} onChange={e => setDForm(f => ({ ...f, amount: e.target.value }))} /></label>
@@ -194,7 +194,7 @@ export default function FinanceTransactionsPage() {
 
             {/* Add Expense Modal */}
             {showExpense && (
-                <Modal title="Record Expense" onClose={() => { setShowExpense(false); setEMsg('') }}>
+                <Modal isOpen={showExpense} title="Record Expense" onClose={() => { setShowExpense(false); setEMsg('') }}>
                     <form onSubmit={submitExpense} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <label style={labelStyle}>Category <input required style={inputStyle} value={eForm.category} onChange={e => setEForm(f => ({ ...f, category: e.target.value }))} /></label>
                         <label style={labelStyle}>Amount (USD) <input required type="number" min="0.01" step="0.01" style={inputStyle} value={eForm.amount} onChange={e => setEForm(f => ({ ...f, amount: e.target.value }))} /></label>

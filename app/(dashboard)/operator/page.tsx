@@ -47,19 +47,25 @@ export default function OperatorDashboard() {
             {/* ── Page header ─────────────────────────────────── */}
             <div className="command-header">
                 <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.375rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.625rem' }}>
                         <div className="live-dot pulse-dot" />
-                        <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--emerald)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Live Feed — updates every 10s</span>
+                        <span style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--emerald)', textTransform: 'uppercase', letterSpacing: '0.1em', textShadow: '0 0 12px rgba(16,185,129,0.6)' }}>
+                            Live Feed — updates every 10s
+                        </span>
                     </div>
-                    <h1 className="page-title">Emergency Response Hub</h1>
-                    <p className="page-subtitle">Monitoring active reports · Hospital coordination · Team dispatch</p>
+                    <h1 className="gradient-title-danger" style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+                        Emergency Response Hub
+                    </h1>
+                    <p style={{ fontSize: '0.875rem', color: 'rgba(139,158,197,0.65)', marginTop: '0.4rem' }}>
+                        Monitoring active reports · Hospital coordination · Team dispatch
+                    </p>
                 </div>
                 <div className="command-header-actions">
                     <button className="btn btn-secondary btn-sm">
                         <svg style={{ width: 14, height: 14 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                         Export Log
                     </button>
-                    <button onClick={() => setReportModal(true)} className="btn btn-primary">
+                    <button onClick={() => setReportModal(true)} className="btn btn-primary" style={{ background: 'linear-gradient(135deg, #f43f5e, #f97316)', boxShadow: '0 0 20px rgba(244,63,94,0.4)', border: 'none' }}>
                         <svg style={{ width: 16, height: 16 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                         Log Emergency
                     </button>
@@ -137,24 +143,32 @@ export default function OperatorDashboard() {
                             <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>No hospital data available</p>
                         ) : hospitals.map((h, i) => {
                             const pct = Math.min(100, (h.available_beds / (h.total_beds || 100)) * 100)
-                            const barColor = pct < 20 ? 'var(--rose)' : pct < 50 ? 'var(--amber)' : 'var(--emerald)'
+                            const isLow = pct < 20, isMid = pct >= 20 && pct < 50
+                            const statusRgb = isLow ? '244,63,94' : isMid ? '245,158,11' : '16,185,129'
+                            const barColor  = isLow ? '#f43f5e' : isMid ? '#f59e0b' : '#10b981'
                             return (
-                                <div key={i} style={{ padding: '0.875rem 1rem', background: 'var(--bg-secondary)', borderRadius: 'var(--r-lg)', border: '1px solid var(--border)' }}>
+                                <div key={i} style={{
+                                    padding: '0.875rem 1rem',
+                                    background: `linear-gradient(135deg, rgba(${statusRgb}, 0.07) 0%, var(--bg-secondary) 60%)`,
+                                    borderRadius: 'var(--r-lg)',
+                                    border: `1px solid rgba(${statusRgb}, 0.2)`,
+                                    borderLeft: `3px solid rgba(${statusRgb}, 0.65)`,
+                                }}>
                                     <div className="flex-between" style={{ marginBottom: '0.625rem' }}>
                                         <div>
                                             <p style={{ fontWeight: 700, fontSize: '0.8125rem', color: 'var(--text-primary)' }}>{h.hospital_name}</p>
-                                            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 2 }}>{h.location}</p>
+                                            <p style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 2 }}>{h.location}</p>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
-                                            <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>{h.available_beds}</p>
-                                            <p style={{ fontSize: '0.6rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginTop: 2 }}>beds free</p>
+                                            <p style={{ fontSize: '1.5rem', fontWeight: 800, color: barColor, lineHeight: 1, fontVariantNumeric: 'tabular-nums', textShadow: `0 0 16px rgba(${statusRgb},0.4)` }}>{h.available_beds}</p>
+                                            <p style={{ fontSize: '0.5625rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginTop: 2, letterSpacing: '0.08em' }}>beds free</p>
                                         </div>
                                     </div>
-                                    <div className="progress-bar">
-                                        <div className="progress-bar-fill" style={{ width: `${pct}%`, background: barColor }} />
+                                    <div className="progress-bar" style={{ height: '5px', background: `rgba(${statusRgb},0.1)` }}>
+                                        <div className="progress-bar-fill" style={{ width: `${pct}%`, background: barColor, boxShadow: `0 0 8px rgba(${statusRgb},0.5)` }} />
                                     </div>
-                                    <div className="flex-between" style={{ marginTop: '0.375rem' }}>
-                                        <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>{Math.round(pct)}% capacity</span>
+                                    <div className="flex-between" style={{ marginTop: '0.5rem' }}>
+                                        <span style={{ fontSize: '0.6875rem', color: `rgba(${statusRgb},0.75)`, fontWeight: 600 }}>{Math.round(pct)}% available</span>
                                         <StatusBadge status={h.bed_status} />
                                     </div>
                                 </div>

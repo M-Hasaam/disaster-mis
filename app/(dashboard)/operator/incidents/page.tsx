@@ -148,7 +148,7 @@ export default function OperatorIncidentsPage() {
 
             {/* Assign Modal */}
             {selected && (
-                <Modal title={`Assign Team — Incident #${selected.report_id}`} onClose={() => { setSelected(null); setAssignMsg('') }}>
+                <Modal isOpen={!!selected} title={`Assign Team — Incident #${selected.report_id}`} onClose={() => { setSelected(null); setAssignMsg('') }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div style={{ padding: '0.875rem', background: 'var(--bg-elevated)', borderRadius: 'var(--r-lg)', border: '1px solid var(--border-subtle)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
