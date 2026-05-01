@@ -77,10 +77,25 @@ export default function LoginPage() {
         }
     }
 
-    function fillDemo(acc: typeof demoAccounts[0]) {
+    async function fillDemo(acc: typeof demoAccounts[0]) {
+        setFilledRole(acc.short)
         setValue('email',    acc.email)
         setValue('password', acc.password)
-        setFilledRole(acc.short)
+        setLoading(true)
+        try {
+            const res = await signIn('credentials', { redirect: false, email: acc.email, password: acc.password })
+            if (res?.ok) {
+                toast.success(`Access Granted — ${acc.role}`)
+                const session = await getSession()
+                router.replace(roleHome[session?.user?.role ?? ''] ?? '/operator')
+            } else {
+                toast.error('Authentication Failed — Invalid credentials')
+            }
+        } catch {
+            toast.error('System Error — Could not connect to server')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -373,6 +388,7 @@ export default function LoginPage() {
                                         <span style={{ fontSize: '0.625rem', fontWeight: 800, color: acc.color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{acc.short}</span>
                                     </div>
                                     <p style={{ fontSize: '0.5875rem', color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace', lineHeight: 1.5 }}>{acc.email}</p>
+                                    <p style={{ fontSize: '0.5875rem', color: 'var(--text-disabled)', fontFamily: 'ui-monospace, monospace', lineHeight: 1.5 }}>{acc.password}</p>
                                 </motion.button>
                             ))}
                         </div>

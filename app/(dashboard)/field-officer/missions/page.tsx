@@ -25,13 +25,19 @@ function DurationChip({ minutes }: { minutes: number }) {
 export default function FieldOfficerMissionsPage() {
     const [missions, setMissions] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const [search, setSearch] = useState('')
     const [filterStatus, setFilterStatus] = useState('')
 
     useEffect(() => {
-        fetch('/api/reports/response-time').then(r => r.json()).then(d => {
-            if (d.ok) setMissions(d.data)
-        }).catch(console.error).finally(() => setLoading(false))
+        fetch('/api/reports/response-time')
+            .then(r => r.json())
+            .then(d => {
+                if (d.ok) setMissions(d.data)
+                else setError(d.error || 'Failed to load mission data')
+            })
+            .catch(e => setError(e.message || 'Network error'))
+            .finally(() => setLoading(false))
     }, [])
 
     const statuses = [...new Set(missions.map(m => m.mission_status).filter(Boolean))]
@@ -173,6 +179,20 @@ export default function FieldOfficerMissionsPage() {
 
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}><div className="loading-ring" /></div>
+            ) : error ? (
+                <div style={{ padding: '3rem 2rem', textAlign: 'center', background: 'rgba(244,63,94,0.04)', border: '1px solid rgba(244,63,94,0.2)', borderRadius: 'var(--r-xl)' }}>
+                    <svg style={{ width: 36, height: 36, color: 'var(--rose)', margin: '0 auto 0.875rem', display: 'block', opacity: 0.7 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75h.007v.008H12v-.008z"/>
+                    </svg>
+                    <p style={{ fontWeight: 700, color: 'var(--color-rose)', marginBottom: '0.375rem' }}>Failed to load mission data</p>
+                    <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', fontFamily: 'ui-monospace, monospace' }}>{error}</p>
+                </div>
+            ) : missions.length === 0 ? (
+                <div style={{ padding: '3rem 2rem', textAlign: 'center', background: 'var(--bg-card)', border: '1px dashed var(--border)', borderRadius: 'var(--r-xl)' }}>
+                    <p style={{ fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.375rem' }}>No mission records found</p>
+                    <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Run SQL/03_DML_SampleData.sql to seed team assignment data.</p>
+                </div>
             ) : (
                 <DataTable columns={columns} data={filtered} pageSize={20} />
             )}

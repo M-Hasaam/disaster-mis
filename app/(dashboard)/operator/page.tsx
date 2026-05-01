@@ -39,7 +39,7 @@ export default function OperatorDashboard() {
 
     const pending    = incidents.filter(i => i.status === 'Pending').length
     const dispatched = incidents.filter(i => i.status === 'Dispatched').length
-    const totalBeds  = hospitals.reduce((acc, h) => acc + (h.available_beds ?? 0), 0)
+    const totalBeds  = hospitals.reduce((acc, h) => acc + (h.beds_available ?? 0), 0)
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -111,7 +111,7 @@ export default function OperatorDashboard() {
                     columns={[
                         { header: 'ID',       accessor: (i: any) => <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.75rem', color: 'var(--text-muted)' }}>#{i.report_id}</span> },
                         { header: 'Type',     accessor: (i: any) => <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.8125rem' }}>{i.disaster_type}</span> },
-                        { header: 'Severity', accessor: (i: any) => <StatusBadge status={i.severity_level} /> },
+                        { header: 'Severity', accessor: (i: any) => <StatusBadge status={i.severity} /> },
                         { header: 'Location', accessor: (i: any) => <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>{i.location}</span> },
                         { header: 'Reporter', accessor: (i: any) => (
                             <div>
@@ -142,7 +142,7 @@ export default function OperatorDashboard() {
                         {hospitals.length === 0 ? (
                             <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>No hospital data available</p>
                         ) : hospitals.map((h, i) => {
-                            const pct = Math.min(100, (h.available_beds / (h.total_beds || 100)) * 100)
+                            const pct = Math.min(100, (h.beds_available / (h.total_beds || 100)) * 100)
                             const isLow = pct < 20, isMid = pct >= 20 && pct < 50
                             const statusRgb = isLow ? '244,63,94' : isMid ? '245,158,11' : '16,185,129'
                             const barColor  = isLow ? '#f43f5e' : isMid ? '#f59e0b' : '#10b981'
@@ -160,7 +160,7 @@ export default function OperatorDashboard() {
                                             <p style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 2 }}>{h.location}</p>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
-                                            <p style={{ fontSize: '1.5rem', fontWeight: 800, color: barColor, lineHeight: 1, fontVariantNumeric: 'tabular-nums', textShadow: `0 0 16px rgba(${statusRgb},0.4)` }}>{h.available_beds}</p>
+                                            <p style={{ fontSize: '1.5rem', fontWeight: 800, color: barColor, lineHeight: 1, fontVariantNumeric: 'tabular-nums', textShadow: `0 0 16px rgba(${statusRgb},0.4)` }}>{h.beds_available}</p>
                                             <p style={{ fontSize: '0.5625rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginTop: 2, letterSpacing: '0.08em' }}>beds free</p>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@ export default function OperatorDashboard() {
                                     </div>
                                     <div className="flex-between" style={{ marginTop: '0.5rem' }}>
                                         <span style={{ fontSize: '0.6875rem', color: `rgba(${statusRgb},0.75)`, fontWeight: 600 }}>{Math.round(pct)}% available</span>
-                                        <StatusBadge status={h.bed_status} />
+                                        <StatusBadge status={h.capacity_status} />
                                     </div>
                                 </div>
                             )
