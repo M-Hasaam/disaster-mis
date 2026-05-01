@@ -51,13 +51,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
         >
             <span style={{
                 fontSize: '0.5625rem', fontWeight: 800,
-                color: 'rgba(59,130,246,0.5)',
+                color: 'var(--sidebar-section-clr)',
                 textTransform: 'uppercase', letterSpacing: '0.15em',
                 whiteSpace: 'nowrap',
             }}>
                 {children}
             </span>
-            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, rgba(59,130,246,0.25), transparent)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, var(--sidebar-section-line), transparent)' }} />
         </motion.div>
     )
 }
@@ -86,7 +86,7 @@ function SidebarItem({ href, icon, label, badge, badgeColor = 'rose' }: SidebarI
                     borderRadius: 'var(--r-md)',
                     fontSize: '0.8125rem',
                     fontWeight: active ? 700 : 500,
-                    color: active ? '#93c5fd' : hovered ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    color: active ? 'var(--sidebar-active-text)' : hovered ? 'var(--text-primary)' : 'var(--text-secondary)',
                     textDecoration: 'none',
                     transition: 'color 0.12s ease',
                     overflow: 'visible',
@@ -101,9 +101,9 @@ function SidebarItem({ href, icon, label, badge, badgeColor = 'rose' }: SidebarI
                             position: 'absolute',
                             inset: 0,
                             borderRadius: 'var(--r-md)',
-                            background: 'linear-gradient(90deg, rgba(59,130,246,0.22) 0%, rgba(59,130,246,0.06) 100%)',
-                            border: '1px solid rgba(59,130,246,0.28)',
-                            boxShadow: '0 0 20px rgba(59,130,246,0.09), inset 0 1px 0 rgba(255,255,255,0.07)',
+                            background: 'var(--sidebar-pill-bg)',
+                            border: '1px solid var(--sidebar-pill-border)',
+                            boxShadow: 'var(--sidebar-pill-shadow)',
                         }}
                     />
                 )}
@@ -120,8 +120,8 @@ function SidebarItem({ href, icon, label, badge, badgeColor = 'rose' }: SidebarI
                             bottom: '16%',
                             width: 3,
                             borderRadius: '0 4px 4px 0',
-                            background: 'linear-gradient(180deg, #93c5fd 0%, #3b82f6 100%)',
-                            boxShadow: '0 0 10px rgba(59,130,246,0.9), 0 0 22px rgba(59,130,246,0.35)',
+                            background: 'var(--sidebar-bar-bg)',
+                            boxShadow: 'var(--sidebar-bar-shadow)',
                         }}
                     />
                 )}

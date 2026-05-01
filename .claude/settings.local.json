@@ -13,7 +13,11 @@
       "PowerShell(head *)",
       "Bash(npx next *)",
       "Bash(npm install *)",
-      "Bash(node -e \"require\\('framer-motion'\\); console.log\\('OK', require\\('./node_modules/framer-motion/package.json'\\).version\\)\")"
+      "Bash(node -e \"require\\('framer-motion'\\); console.log\\('OK', require\\('./node_modules/framer-motion/package.json'\\).version\\)\")",
+      "Bash(del \"app\\\\performance\\\\page.tsx\")",
+      "Bash(del \"app\\\\reports\\\\page.tsx\")",
+      "Bash(Get-ChildItem -Path \"D:\\\\CODE\\\\Projects\\\\University_Projects\\\\DB\\\\disaster-mis\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)"
     ]
   }
 }

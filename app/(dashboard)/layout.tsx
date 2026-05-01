@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import authOptions from '@/lib/auth'
 import Sidebar from '@/components/ui/Sidebar'
 import PageTransition from '@/components/ui/PageTransition'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -42,20 +43,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
                             </span>
                         </div>
 
-                        <div style={{ width: 1, height: 18, background: 'var(--border)' }} />
-
-                        {/* Search pill (visual — can be upgraded to cmd palette later) */}
-                        <div className="topbar-search-bar" role="button" aria-label="Search">
-                            <svg style={{ width: 13, height: 13, flexShrink: 0 }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
-                            </svg>
-                            <span style={{ flex: 1, fontSize: '0.8rem', color: 'var(--text-muted)' }}>Search records...</span>
-                            <span className="kbd-pill">⌘ K</span>
-                        </div>
                     </div>
 
                     {/* Right: notifications + user */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+                        {/* Theme toggle */}
+                        <ThemeToggle />
 
                         {/* Notification bell */}
                         <button

@@ -28,8 +28,8 @@ export default function PerformancePage() {
             {/* ── Header ──────────────────────────────────────── */}
             <div className="command-header">
                 <div>
-                    <h1 className="page-title">Database Performance Diagnostics</h1>
-                    <p className="page-subtitle">Comparative analysis: Indexed vs Non-Indexed · Views vs Base Tables · Query latency benchmarks</p>
+                    <h1 className="page-title gradient-title">Database Performance</h1>
+                    <p className="page-subtitle">Comparative analysis · Indexed vs Non-Indexed · Views vs Base Tables · Query latency benchmarks</p>
                 </div>
                 <button
                     onClick={runBenchmarks}
@@ -105,7 +105,6 @@ export default function PerformancePage() {
 
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        {/* Indexed bar */}
                                         <div>
                                             <div className="flex-between" style={{ marginBottom: '0.375rem' }}>
                                                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--emerald)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Custom Indexing / Views</span>
@@ -115,7 +114,6 @@ export default function PerformancePage() {
                                                 <div className="progress-bar-fill" style={{ width: `${idxPct}%`, background: 'var(--emerald)', transition: 'width 1s ease' }} />
                                             </div>
                                         </div>
-                                        {/* Non-indexed bar */}
                                         <div>
                                             <div className="flex-between" style={{ marginBottom: '0.375rem' }}>
                                                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--rose)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Baseline (Direct Tables)</span>
@@ -125,16 +123,12 @@ export default function PerformancePage() {
                                                 <div className="progress-bar-fill" style={{ width: `${basePct}%`, background: 'var(--rose)', transition: 'width 1s ease' }} />
                                             </div>
                                         </div>
-
-                                        {/* Delta */}
                                         <div style={{ padding: '0.625rem 0.875rem', background: faster ? 'var(--emerald-dim)' : 'var(--amber-dim)', borderRadius: 'var(--r-md)', border: `1px solid ${faster ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}` }}>
                                             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: faster ? 'var(--emerald)' : 'var(--amber)' }}>
                                                 {faster ? `${b.non_indexed_ms - b.indexed_ms}ms faster with indexing` : 'Indexing not beneficial for this query'}
                                             </span>
                                         </div>
                                     </div>
-
-                                    {/* Rationale */}
                                     <div style={{ padding: '1rem 1.125rem', background: 'var(--bg-secondary)', borderRadius: 'var(--r-lg)', border: '1px solid var(--border)' }}>
                                         <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>Technical Rationale</p>
                                         <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
@@ -150,7 +144,7 @@ export default function PerformancePage() {
 
             {/* ── Optimization strategy ─────────────────────────── */}
             <div className="card card-accent-emerald">
-                <h3 className="section-title" style={{ color: '#34d399' }}>Optimization Strategy Summary</h3>
+                <h3 className="section-title" style={{ color: 'var(--emerald)' }}>Optimization Strategy Summary</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginTop: '1rem' }}>
                     {[
                         {
