@@ -17,7 +17,9 @@
       "Bash(del \"app\\\\performance\\\\page.tsx\")",
       "Bash(del \"app\\\\reports\\\\page.tsx\")",
       "Bash(Get-ChildItem -Path \"D:\\\\CODE\\\\Projects\\\\University_Projects\\\\DB\\\\disaster-mis\" -Recurse -Directory)",
-      "Bash(Select-Object -ExpandProperty FullName)"
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Get-ChildItem -Path \"SQL\" -Recurse)",
+      "Bash(Test-Path *)"
     ]
   }
 }
